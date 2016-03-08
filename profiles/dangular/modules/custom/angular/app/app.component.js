@@ -21,6 +21,9 @@ System.register(['angular2/core'], function(exports_1, context_1) {
             AppComponent = (function () {
                 function AppComponent() {
                 }
+                AppComponent.prototype.getClasses = function () {
+                    return 'clearing-thumbs small-block-grid-5';
+                };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'drupal-view',

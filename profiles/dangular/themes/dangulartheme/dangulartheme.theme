@@ -44,3 +44,11 @@ function dangulartheme_preprocess_page(&$variables) {
 function dangulartheme_preprocess_views_view(&$variables) {
   $variables['view_array']['view_build']['#attached']['library'][] = 'angular/integration';
 }
+
+/**
+ * Implements template_preprocess_views_view_list().
+ */
+function dangulartheme_preprocess_views_view_list(array &$variables) {
+  $variables['list']['attributes']['[class]'] = 'getClasses()';
+  unset($variables['list']['attributes']['class']);
+}
