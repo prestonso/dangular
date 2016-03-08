@@ -1,0 +1,4 @@
+name: Angular
+type: module
+core: 8.x
+description: When Drupal meets Angular, the sparks shall fly.
