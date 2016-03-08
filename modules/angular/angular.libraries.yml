@@ -16,3 +16,10 @@ angular2:
       minified: true
     node_modules/angular2/bundles/angular2.min.js:
       minified: true
+
+integration:
+  js:
+    init.js: {}
+  dependencies:
+#    - angular/ie-polyfills
+    - angular/angular2
