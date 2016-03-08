@@ -1,8 +1,8 @@
 import { Component } from 'angular2/core';
 
 @Component({
-  selector: 'div.angular',
-  template: 'Here be Drupal-y dragons...'
+  selector: 'drupal-view',
+  template: document.getElementById('views-view').innerHTML
 })
 export class AppComponent {
 }

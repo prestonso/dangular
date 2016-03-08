@@ -1,7 +1,7 @@
 System.defaultJSExtensions = true;
 
 System.config({
-  baseURL: '/profiles/dangular/modules/custom/angular',
+  baseURL: 'profiles/dangular/modules/custom/angular',
   map: {
     angular2: 'node_modules/angular2',
     rxjs: 'node_modules/rxjs'
