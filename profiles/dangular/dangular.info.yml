@@ -41,6 +41,7 @@ dependencies:
   - features_ui
   - devel
   - devel_generate
+  - services
   # features
   - dangular_admin_blocks
   - dangular_zurb_dangular_blocks

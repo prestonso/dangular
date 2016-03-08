@@ -12,8 +12,17 @@ projects:
     download:
       type: git
       branch: 8.x-1.x
+    subdir: contrib
   config_update:
     type: module
     version: 1.0
+    subdir: contrib
+  services:
+    type: module
+    version: 4.0-alpha3
+    subdir: contrib
+  ctools:
+    type: module
+    version: 3.0-alpha23
     subdir: contrib
 
