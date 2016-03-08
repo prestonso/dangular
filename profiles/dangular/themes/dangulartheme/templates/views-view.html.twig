@@ -37,12 +37,15 @@ set classes = [
 dom_id ? 'js-view-dom-id-' ~ dom_id,
 ]
 %}
-<drupal-view></drupal-view>
+<drupal-view id="{{ view_id }}"></drupal-view>
 <template id="views-view">
     <form>
         <div>
             <label>Columns</label>
             <input type="number" min="1" max="8" [value]="columns" (change)="setColumns($event)" />
+        </div>
+        <div>
+            <button type="submit" (click)="persist()">Save Changes</button>
         </div>
     </form>
 <div{{ attributes.addClass(classes) }}>
