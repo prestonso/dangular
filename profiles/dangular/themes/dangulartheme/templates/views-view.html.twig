@@ -39,6 +39,12 @@ dom_id ? 'js-view-dom-id-' ~ dom_id,
 %}
 <drupal-view></drupal-view>
 <template id="views-view">
+    <form>
+        <div>
+            <label>Columns</label>
+            <input type="number" min="1" max="8" [value]="columns" (change)="setColumns($event)" />
+        </div>
+    </form>
 <div{{ attributes.addClass(classes) }}>
     {{ title_prefix }}
     {{ title }}

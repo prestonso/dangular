@@ -20,9 +20,13 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
+                    this.columns = 4;
                 }
+                AppComponent.prototype.setColumns = function (event) {
+                    this.columns = event.target.value;
+                };
                 AppComponent.prototype.getClasses = function () {
-                    return 'clearing-thumbs small-block-grid-5';
+                    return 'clearing-thumbs small-block-grid-' + this.columns;
                 };
                 AppComponent = __decorate([
                     core_1.Component({

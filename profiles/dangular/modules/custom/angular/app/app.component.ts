@@ -6,8 +6,14 @@ import { Component } from 'angular2/core';
 })
 export class AppComponent {
 
+  columns: number = 4;
+
+  setColumns (event) {
+    this.columns = event.target.value;
+  }
+
   getClasses () {
-    return 'clearing-thumbs small-block-grid-5';
+    return 'clearing-thumbs small-block-grid-' + this.columns;
   }
 
 }
