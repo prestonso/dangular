@@ -1,0 +1,3 @@
+bundle: dangular
+required:
+  - views.view.dangular_image_grid

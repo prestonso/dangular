@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Dangular installation
+ * profile.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Config\InstallStorage;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\node\Entity\NodeType;
+use Drupal\user\Entity\User;
+use Drupal\user\RoleInterface;
+use Drupal\shortcut\Entity\Shortcut;
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for Dangular Profile.
+ *
+ * @see system_install()
+ */
+function dangular_install() {
+  // Set front page to "node".
+  \Drupal::configFactory()
+    ->getEditable('system.site')
+    ->set('page.front', '/node')
+    ->save(TRUE);
+
+  // Assign user 1 the "administrator" role.
+  $user = User::load(1);
+  $user->roles[] = 'administrator';
+  $user->save();
+
+  // Populate the default shortcut set.
+  Shortcut::create(
+    [
+      'shortcut_set' => 'default',
+      'title' => t('Dangular Grid'),
+      'weight' => 1,
+      'link' => ['uri' => 'internal:/dangular-image-grid'],
+    ]
+  )->save();
+
+  // Set the default and admin theme
+  \Drupal::configFactory()
+    ->getEditable('system.theme')
+    ->set('default', 'dangulartheme')
+    ->set('admin', 'seven')
+    ->save(TRUE);
+
+  // Enable the admin theme.
+  \Drupal::configFactory()
+    ->getEditable('node.settings')
+    ->set('use_admin_theme', TRUE)
+    ->save(TRUE);
+
+  // Set the homepage to the grid view.
+  \Drupal::configFactory()
+    ->getEditable('system.site')
+    ->set('name', 'Dangular')
+    ->set('mail', 'admin@example.com')
+    ->set('slogan', '')
+    ->set('page', [
+      '403' => '',
+      '404' => '',
+      'front' => '/dangular-image-grid',
+    ])
+    ->set('admin_compact_mode', false)
+    ->set('weight_select_max', 100)
+    ->set('langcode', 'en')
+    ->set('default_langcode', 'en')
+    ->save(TRUE);
+
+  // Generate content for the grid
+  drush_invoke_process('@self', 'generate-content', array('generate-content' => 24), array('types' => 'dangular_grid_item'));
+}
+

@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - node.type.dangular_grid_item
+  module:
+    - user
+id: node.dangular_grid_item.teaser
+targetEntityType: node
+bundle: dangular_grid_item
+mode: teaser
+content:
+  links:
+    weight: 100
+hidden: {  }

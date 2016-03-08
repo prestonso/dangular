@@ -1,0 +1,3 @@
+bundle: dangular
+required:
+  - image.style.dangular_grid

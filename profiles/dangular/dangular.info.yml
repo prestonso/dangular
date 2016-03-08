@@ -1,50 +1,57 @@
 name: Dangular
 type: profile
-description: 'Tracking Drupal 8.1.x plus some contributed modules.'
-version: VERSION
+description: 'Angular SPA for Drupal administration.'
 core: 8.x
+distribution:
+  name: Dangular
+
+# Required modules
 dependencies:
-  # Standard
-  - node
-  - history
-  - block
-  - breakpoint
+  # core
+  - block_content
   - ckeditor
-  - color
   - config
-  - comment
   - contextual
-  - contact
   - menu_link_content
   - datetime
   - block_content
   - quickedit
   - editor
+  - entity_reference
   - help
+  - history
   - image
   - menu_ui
+  - node
   - options
   - path
   - page_cache
-  - dynamic_page_cache
   - taxonomy
+  - text
   - dblog
-  - search
   - shortcut
+  - system
   - toolbar
   - field_ui
   - file
-  - rdf
   - views
   - views_ui
-  - tour
-  - automated_cron
-
-  # Additional modules needed
-  - ctools
-  - serialization
-  - services
+  # contrib
+  - features
+  - features_ui
+  - devel
+  - devel_generate
+  # features
+  - dangular_admin_blocks
+  - dangular_zurb_dangular_blocks
+  - dangular_grid_item
+  - dangular_grid_view
+  - dangular_grid_image
+  # custom
+  - angular
 
 themes:
-  - bartik
+  - zurb_foundation
+  - dangulartheme
   - seven
+

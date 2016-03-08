@@ -1,0 +1,7 @@
+bundle: dangular
+required:
+  - block.block.mainnavigation
+  - block.block.mainpagecontent
+  - block.block.messages
+  - block.block.sitebranding
+  - block.block.tabs

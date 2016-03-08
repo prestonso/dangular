@@ -1,0 +1,10 @@
+.DS_Store
+*.html
+humans.txt
+robots.txt
+MIT-LICENSE.txt
+js/foundation/jquery.js
+js/vendor/jquery.js
+js/vendor/zepto.js
+bower_components
+node_modules

@@ -1,0 +1,14 @@
+langcode: en
+status: true
+id: messages
+theme: dangulartheme
+region: highlighted
+weight: -3
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Messages
+  provider: system
+  label_display: '0'
+visibility: {  }

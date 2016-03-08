@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Zurb Foundation override for menu blocks rendered in the off-canvas regions.
+ *
+ * This is needed as the wrapping element (nav) around off-canvas menus will
+ * cause rendering issues when navigating sub-menus.
+ */
+#}
+
+{% block content %}
+  {{ content }}
+{% endblock %}

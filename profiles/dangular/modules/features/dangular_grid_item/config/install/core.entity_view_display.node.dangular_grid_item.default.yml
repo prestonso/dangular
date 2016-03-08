@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.dangular_grid_item.field_dangular_grid_image
+    - node.type.dangular_grid_item
+  module:
+    - image
+    - user
+id: node.dangular_grid_item.default
+targetEntityType: node
+bundle: dangular_grid_item
+mode: default
+content:
+  field_dangular_grid_image:
+    weight: 101
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+  links:
+    weight: 100
+hidden: {  }

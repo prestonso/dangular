@@ -1,0 +1,6 @@
+{
+    "name": "drupal/dangular",
+    "description": "Angular SPA for Drupal administration",
+    "type": "drupal-profile",
+    "license": "GPL-2.0+"
+}

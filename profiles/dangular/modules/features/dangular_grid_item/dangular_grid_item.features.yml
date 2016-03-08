@@ -1,0 +1,8 @@
+bundle: dangular
+required:
+  - core.base_field_override.node.dangular_grid_item.promote
+  - node.type.dangular_grid_item
+  - core.entity_form_display.node.dangular_grid_item.default
+  - core.entity_view_display.node.dangular_grid_item.default
+  - core.entity_view_display.node.dangular_grid_item.teaser
+  - field.field.node.dangular_grid_item.field_dangular_grid_image

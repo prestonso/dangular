@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: dangular_grid
+label: 'Dangular Grid'
+effects:
+  c9457240-d0b2-440f-be35-538ce8e0c193:
+    uuid: c9457240-d0b2-440f-be35-538ce8e0c193
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 400
+      height: 400

@@ -1,0 +1,376 @@
+<?php
+
+/**
+ * Load template files
+ */
+require_once('inc/elements.inc');
+require_once('inc/form.inc');
+require_once('inc/menu.inc');
+require_once('inc/theme.inc');
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ *
+ * Adds the "title" variable so that the current page can be added as a breadcrumb.
+ */
+function zurb_foundation_preprocess_breadcrumb(&$variables) {
+  $request = \Drupal::request();
+  $route_match = \Drupal::routeMatch();
+  $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+
+  $variables['title'] = $title;
+}
+
+/**
+ * Implements hook_preprocess_block()
+ */
+function zurb_foundation_preprocess_block(&$variables) {
+  // Convenience variable for block headers.
+  $title_class = &$variables['title_attributes']['class'];
+
+  // Generic block header class.
+  $title_class[] = 'block-title';
+
+  $region = isset($variables['configuration']['region']) ? $variables['configuration']['region'] : '';
+
+  if ($region == 'header') {
+    $title_class[] = 'visually-hidden';
+  }
+
+  // Add a unique class for each block for styling.
+  if (isset($variables['attributes']['id'])) {
+    $variables['attributes']['class'][] = $variables['attributes']['id'];
+  }
+
+  switch ($region) {
+    // Add a striping class
+    case 'sidebar_first':
+    case 'sidebar_second':
+      #$variables['attributes']['class'][] = 'block-' . $variables['zebra'];
+    break;
+
+    case 'header':
+      $variables['attributes']['class'][] = 'header';
+    break;
+
+    default;
+  }
+}
+
+/**
+ * Implements template_preprocess_field().
+ */
+function zurb_foundation_preprocess_field(&$variables) {
+  if (!isset($variables['title_attributes']['class'])) {
+    $variables['title_attributes']['class'] = array();
+  }
+  if (!isset($variables['content_attributes']['class'])) {
+    $variables['content_attributes']['class'] = array();
+  }
+  $variables['title_attributes']['class'][] = 'field-label';
+
+  // Convenience variables
+  $mode = $variables['element']['#view_mode'];
+  $classes = &$variables['attributes']['class'];
+  $content_classes = &$variables['content_attributes']['class'];
+  $item_classes = array();
+
+  // Global field classes
+  $classes[] = 'field-wrapper';
+  $content_classes[] = 'field-items';
+  $item_classes[] = 'field-item';
+
+  // Add specific classes to targeted fields
+  if(isset($field)) {
+    switch ($mode) {
+      // All teasers
+      case 'teaser':
+        switch ($field) {
+          // Teaser read more links
+          case 'node_link':
+            $item_classes[] = 'more-link';
+            break;
+          // Teaser descriptions
+          case 'body':
+          case 'field_description':
+            $item_classes[] = 'description';
+            break;
+        }
+      break;
+    }
+  }
+
+  // Apply odd or even classes along with our custom classes to each item
+  foreach ($variables['items'] as $delta => $item) {
+    $item_classes[] = $delta % 2 ? 'odd' : 'even';
+    $variables['item_attributes'][$delta]['class'] = $item_classes;
+  }
+
+  // Add class to a specific fields across content types.
+  switch ($variables['element']['#field_name']) {
+    case 'body':
+      $classes = array('body');
+      break;
+
+    case 'field_summary':
+      $classes[] = 'text-teaser';
+      break;
+
+    case 'field_link':
+    case 'field_date':
+      // Replace classes entirely, instead of adding extra.
+    $classes = array('text-content');
+      break;
+
+    case 'field_image':
+      // Replace classes entirely, instead of adding extra.
+      $classes = array('image');
+      break;
+
+    default:
+      break;
+  }
+
+  // Add classes to body based on content type and view mode.
+  if ($variables['element']['#field_name'] == 'body') {
+    // Add classes to other content types with view mode 'teaser';
+    if ($variables['element']['#view_mode'] == 'teaser') {
+      $classes[] = 'text-secondary';
+    }
+    // The rest is text-content.
+    else {
+      $classes[] = 'field';
+    }
+  }
+}
+
+/**
+ * Implements template_preprocess_html().
+ *
+ * Adds additional classes
+ */
+function zurb_foundation_preprocess_html(&$variables) {
+  /* @var Drupal\Core\Language\LanguageInterface */
+  $language = \Drupal::languageManager()->getCurrentLanguage();
+  $site_language = $language->getId();
+  $site_language_direction = $language->getDirection();
+  $request = \Drupal::request();
+
+  // Clean up the lang attributes
+  $variables['html_attributes'] = 'lang="' . $site_language . '" dir="' . $site_language_direction . '"';
+
+  // Add language body class.
+  $variables['attributes']['class'][] = 'lang-' . $site_language;
+
+  // Classes for body element. Allows advanced theming based on context
+  $is_front_page = \Drupal::service('path.matcher')->isFrontPage();
+  if (!$is_front_page) {
+    $path = trim($request->getRequestUri(), '/');
+    // Add unique class for each website section.
+    $arg = explode('/', $path);
+    $section = $arg[0];
+    if ($arg[0] == 'node' && isset($arg[1])) {
+      if ($arg[1] == 'add') {
+        $section = 'node-add';
+      }
+      elseif (isset($arg[2]) && is_numeric($arg[1]) && ($arg[2] == 'edit' || $arg[2] == 'delete')) {
+        $section = 'node-' . $arg[2];
+      }
+    }
+    $variables['attributes']['class'][] = \Drupal\Component\Utility\Html::getClass('section-' . $section);
+  }
+
+  // Store the menu item since it has some useful information.
+  if ($request->attributes->get('view_id')) {
+    $variables['attributes']['class'][] = 'views-page';
+  }
+  elseif ($request->attributes->get('panel')) {
+    $variables['attributes']['class'][] = 'panels-page';
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter
+ *
+ * Add custom meta tags to the header.
+ */
+function zurb_foundation_page_attachments_alter(&$page) {
+  // Optimize mobile viewport.
+  $page['#attached']['html_head'][] = array(array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+        'name' => 'viewport',
+        'content' => 'width=device-width',
+      ),
+  ), 'mobile_viewport');
+
+  // Force IE to use Chrome Frame if installed.
+  $page['#attached']['html_head'][] = array(array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'content' => 'ie=edge, chrome=1',
+      'http-equiv' => 'x-ua-compatible',
+    ),
+  ), 'chrome_frame');
+
+  // Remove image toolbar in IE.
+  $page['#attached']['html_head'][] = array(array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'http-equiv' => 'ImageToolbar',
+      'content' => 'false',
+    ),
+  ), 'ie_image_toolbar');
+}
+
+/**
+ * Implements template_preprocess_node
+ *
+ * Add template suggestions and classes
+ */
+function zurb_foundation_preprocess_node(&$variables) {
+  // Add node--node_type--view_mode.html.twig suggestions
+  $variables['theme_hook_suggestions'][] = 'node__' . $variables['elements']['#node']->bundle() . '__' . $variables['view_mode'];
+
+  // Add node--view_mode.html.twig suggestions
+  $variables['theme_hook_suggestions'][] = 'node__' . $variables['view_mode'];
+
+  // Add a class for the view mode.
+  if (!$variables['teaser']) {
+    $variables['content_attributes']['class'][] = 'view-mode-' . $variables['view_mode'];
+  }
+
+  $variables['title_attributes']['class'][] = 'node-title';
+}
+
+/**
+ * Implements template_preprocess_page
+ *
+ * Add convenience variables and template suggestions
+ */
+function zurb_foundation_preprocess_page(&$variables) {
+  $site_name = isset($variables['site_name']) ? $variables['site_name'] : \Drupal::config('system.site')->get('name');
+
+  // Add page--node_type.html.twig suggestions
+  if (!empty($variables['node'])) {
+    $variables['theme_hook_suggestions'][] = 'page__' . $variables['node']->bundle();
+  }
+
+  $variables['logo_img'] = '';
+  if (!empty($variables['logo'])) {
+    $elements = array(
+      '#theme' => 'image',
+      '#attributes' => array(
+        'src' => $variables['logo'],
+        'alt' => strip_tags($site_name) . ' ' . t('logo'),
+        'title' => strip_tags($site_name) . ' ' . t('Home'),
+        'class' => array('logo'),
+      )
+    );
+
+    $variables['logo_img'] = $elements;
+  }
+
+  $title = strip_tags($site_name) . ' ' . t('Home');
+  $url = \Drupal\Core\Url::fromRoute('<front>');
+  $url->setOption('attributes', array('title' => $title));
+
+  if (theme_get_setting('zurb_foundation_page_site_logo')) {
+    $variables['linked_logo'] = '';
+    if (!empty($variables['logo_img'])) {
+      $variables['linked_logo'] = \Drupal::l($variables['logo_img'], $url);
+    }
+  }
+
+  if (theme_get_setting('zurb_foundation_page_site_name')) {
+    $variables['linked_site_name'] = '';
+    if (!empty($site_name)) {
+      $variables['linked_site_name'] = \Drupal::l($site_name, $url);
+    }
+  }
+
+  // Convenience variables
+  $left = $variables['page']['sidebar_first'];
+  $right = $variables['page']['sidebar_second'];
+
+  // Dynamic sidebars
+  if (!empty($left) && !empty($right)) {
+    $variables['main_grid'] = 'large-6 large-push-3';
+    $variables['sidebar_first_grid'] = 'large-3 large-pull-6';
+    $variables['sidebar_sec_grid'] = 'large-3';
+  }
+  elseif (empty($left) && !empty($right)) {
+    $variables['main_grid'] = 'large-9';
+    $variables['sidebar_first_grid'] = '';
+    $variables['sidebar_sec_grid'] = 'large-3';
+  }
+  elseif (!empty($left) && empty($right)) {
+    $variables['main_grid'] = 'large-9 large-push-3';
+    $variables['sidebar_first_grid'] = 'large-3 large-pull-9';
+    $variables['sidebar_sec_grid'] = '';
+  }
+  else {
+    $variables['main_grid'] = 'large-12';
+    $variables['sidebar_first_grid'] = '';
+    $variables['sidebar_sec_grid'] = '';
+  }
+
+  // Add classes to highlighted region.
+  if (!empty($variables['page']['highlighted'])) {
+    $variables['page']['highlighted']['#attributes']['class'][] = 'region-highlighted';
+    $variables['page']['highlighted']['#attributes']['class'][] = 'panel';
+    $variables['page']['highlighted']['#attributes']['class'][] = 'callout';
+  }
+
+  // Check to see if the Meta Header should be in the Grid.
+  $variables['meta_header_grid'] = theme_get_setting('zurb_foundation_meta_header_grid');
+
+  // Make sure site_name is always set, in case there's only a default.
+  $variables['site_name'] = $site_name;
+
+  // Variable to disable hard-coded login elements.
+  $variables['show_account_info'] = theme_get_setting('zurb_foundation_page_account_info');
+}
+
+/**
+ * Implements hook_css_alter().
+ * @param $css
+ */
+function zurb_foundation_css_alter(&$css) {
+  // Remove base theme CSS.
+  if(theme_get_setting('zurb_foundation_disable_base_css') == TRUE) {
+    $theme_path = drupal_get_path('theme', 'zurb_foundation');
+
+    foreach($css as $path => $values) {
+      if(strpos((string) $values['data'], $theme_path) === 0) {
+        unset($css[$path]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_js_alter().
+ * @param $js
+ */
+function zurb_foundation_js_alter(&$js) {
+  // Remove base theme JS.
+  $theme_path = drupal_get_path('theme', 'zurb_foundation');
+  if(theme_get_setting('zurb_foundation_disable_base_js') == TRUE) {
+
+    foreach($js as $path => $values) {
+      if(strpos((string) $values['data'], $theme_path) === 0) {
+        unset($js[$path]);
+      }
+    }
+  }
+
+  // Increase weight of the JS include that sets proper Active classes for the
+  // Topbar.
+  if (isset($js[$theme_path . '/js/top_bar_active.js'])) {
+    $js[$theme_path . '/js/top_bar_active.js']['weight'] = 1;
+  }
+}

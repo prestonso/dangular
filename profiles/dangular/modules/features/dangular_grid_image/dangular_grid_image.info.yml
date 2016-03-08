@@ -1,0 +1,6 @@
+name: 'Grid Image'
+description: 'Defines a square image style for use in the Dangular Grid.'
+type: module
+core: 8.x
+version: 8.x-1.0
+package: Dangular
