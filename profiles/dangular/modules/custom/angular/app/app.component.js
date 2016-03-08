@@ -23,7 +23,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 }
                 AppComponent = __decorate([
                     core_1.Component({
-                        selector: 'drupal',
+                        selector: 'div.angular',
                         template: 'Here be Drupal-y dragons...'
                     }), 
                     __metadata('design:paramtypes', [])
