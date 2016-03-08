@@ -48,6 +48,7 @@ dependencies:
   - dangular_grid_item
   - dangular_grid_view
   - dangular_grid_image
+  - dangular_service_endpoint
   # custom
   - angular
 

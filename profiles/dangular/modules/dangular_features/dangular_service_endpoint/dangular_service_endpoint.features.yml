@@ -1,0 +1,3 @@
+bundle: dangular
+required:
+  - services.service_endpoint.dangular
