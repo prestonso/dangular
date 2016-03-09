@@ -1,0 +1,6 @@
+name: 'Admin Blocks'
+description: 'Block assignment for admin (seven) theme'
+type: module
+core: 8.x
+version: 8.x-1.0
+package: Dangular

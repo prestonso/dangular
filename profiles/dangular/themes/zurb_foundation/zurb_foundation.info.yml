@@ -1,0 +1,46 @@
+name: ZURB Foundation
+description: The most advanced responsive front-end framework in the world, now in Drupal!
+# core: 8.x
+type: theme
+
+# Image appears on admin/appearance
+screenshot: images/screenshot.jpg
+
+libraries:
+  - zurb_foundation/global
+
+# Uncompressed uncomment for development or as a reference
+# - zurb_foundation/development
+
+# Regions are output in the page.html.twig
+
+regions:
+  header: Header
+  meta_header: 'Meta header'
+  help: Help
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+  highlighted: Highlighted
+  content: Content
+  sidebar_first: 'Left Sidebar'
+  sidebar_second: 'Right Sidebar'
+  footer_first: 'Footer first column'
+  footer_middle: 'Footer middle column'
+  footer_last: 'Footer last column'
+  left_off_canvas: 'Left off canvas'
+  right_off_canvas: 'Right off canvas'
+regions_hidden:
+  page_top: 'Page Top'
+  page_bottom: 'Page bottom'
+
+features:
+  - logo
+  - name
+  - slogan
+  - favicon
+
+# Information added by Drupal.org packaging script on 2015-12-11
+version: '8.x-5.0-beta2'
+core: '8.x'
+project: 'zurb_foundation'
+datestamp: 1449853742

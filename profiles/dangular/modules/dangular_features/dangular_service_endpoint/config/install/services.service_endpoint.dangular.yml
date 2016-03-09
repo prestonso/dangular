@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dangular
+label: Dangular
+service_providers:
+  'entity_get:view': 'entity_get:view'
+  'entity_index:view': 'entity_index:view'
+  'entity_put:view': 'entity_put:view'
+endpoint: dangular-endpoint

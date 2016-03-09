@@ -1,0 +1,9 @@
+name: 'Grid Item'
+description: 'A content type to be used in the Dangular Demo View'
+type: module
+core: 8.x
+dependencies:
+  - image
+  - node
+version: 8.x-1.0
+package: Dangular

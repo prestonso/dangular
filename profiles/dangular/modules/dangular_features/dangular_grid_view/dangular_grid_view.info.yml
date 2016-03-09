@@ -1,0 +1,6 @@
+name: 'Dangular Grid View'
+description: 'Defines the view of Grid Items for the demo'
+type: module
+core: 8.x
+version: 8.x-1.0
+package: Dangular

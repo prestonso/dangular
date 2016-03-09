@@ -1,0 +1,10 @@
+global:
+  version: VERSION
+  css:
+    base:
+      css/dangulartheme.css: {}
+  js:
+    js/dangulartheme.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery

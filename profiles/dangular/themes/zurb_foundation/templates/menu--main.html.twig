@@ -1,0 +1,76 @@
+{#
+/**
+ * @file
+ * Theme override to display a menu.
+ *
+ * Available variables:
+ * - menu_name: The machine name of the menu.
+ * - items: A nested list of menu items. Each menu item contains:
+ *   - attributes: HTML attributes for the menu item.
+ *   - below: The menu item child items.
+ *   - title: The menu link title.
+ *   - url: The menu link url, instance of \Drupal\Core\Url
+ *   - localized_options: Menu link localized options.
+ */
+#}
+{% import _self as menus %}
+
+{#
+  We call a macro which calls itself to render the full tree.
+  @see http://twig.sensiolabs.org/doc/tags/macro.html
+#}
+
+{% if top_bar %}
+  <div class="{{ top_bar_classes }}">
+    <nav class="top-bar" data-topbar data-options="{{ top_bar_options }}" >
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">{{ site_name }}</a></h1>
+        </li>
+        <li class="toggle-topbar menu-icon">
+          <a href="#"><span>{{ top_bar_menu_text }}</span></a>
+        </li>
+      </ul>
+      <section class="top-bar-section">
+        {{ menus.menu_links(items, attributes, 0, 1) }}
+        {% if top_bar_search %}
+          {{ top_bar_search }}
+        {% endif %}
+      </section>
+    </nav>
+  </div>
+{% else %}
+  {{ menus.menu_links(items, attributes, 0, 0) }}
+{% endif %}
+
+{% macro menu_links(items, attributes, menu_level, top_bar) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% if menu_level == 0 %}
+<ul{{ attributes.addClass('menu', 'nav-bar') }}>
+  {% else %}
+  <ul class="menu nav-bar">
+    {% endif %}
+    {% for item in items %}
+      {% if top_bar %}
+        {% set item_classes = [ item.below is not empty ? 'has-dropdown' ] %}
+        {% set child_class = 'dropdown' %}
+      {% else %}
+        {% set item_classes = [ item.below is not empty ? 'has-flyout' ] %}
+        {% set child_class = 'flyout' %}
+      {% endif %}
+      <li{{ item.attributes.addClass(item_classes) }}>
+        {{ link(item.title, item.url) }}
+        {% if item.below %}
+          {% if not top_bar %}
+            <a href="#" class="flyout-toggle"><span></span></a>
+          {% endif %}
+          <ul class="{{ child_class }}">
+            {{ menus.menu_links(item.below, attributes, menu_level + 1, top_bar) }}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+{% endmacro %}

@@ -1,0 +1,25 @@
+ie-polyfills:
+  js:
+    node_modules/es6-shim/es6-shim.min.js:
+      minified: true
+    node_modules/systemjs/dist/system-polyfills.js:
+      minified: true
+    node_modules/angular2/es6/dev/src/testing/shims_for_IE.js: {}
+
+angular2:
+  js:
+    node_modules/angular2/bundles/angular2-polyfills.min.js:
+      minified: true
+    node_modules/systemjs/dist/system.js:
+      minified: true
+    node_modules/rxjs/bundles/Rx.min.js:
+      minified: true
+    node_modules/angular2/bundles/angular2.min.js:
+      minified: true
+
+integration:
+  js:
+    init.js: {}
+  dependencies:
+#    - angular/ie-polyfills
+    - angular/angular2

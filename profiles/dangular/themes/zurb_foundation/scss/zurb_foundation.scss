@@ -1,0 +1,78 @@
+/*
+ * zurb_foundation.scss - Contains all Drupal-specific SASS for this theme.
+ *
+ * @todo Split this into multiple folders/files.
+*/
+
+// A fix for https://www.drupal.org/node/953034 - Themes currently cannot
+// determine if a region is empty
+
+.region-highlighted:empty {
+    display: none;
+}
+
+// This has been an issue since 7.x, Foundation rules about list elements
+// affect Navbar sizing.
+
+.toolbar-tray a {
+    font-size: 13px;
+}
+
+// Remove Foundation's top margin from the toggle orientation button.
+
+.toolbar .toolbar-toggle-orientation .toolbar-icon {
+    margin: 0;
+    // Fix offset problem where half of orientation button is not visible.
+    &:before {
+        min-height: 0;
+    }
+}
+
+// Override styles from /core/modules/system/css/components/menu.theme.css
+
+.top-bar-section ul li {
+    padding-top: 0;
+    a.is-active {
+        color: #FFFFFF;
+    }
+}
+
+// Offset the top bar if the Navbar (toolbar) is present.
+
+body.toolbar-fixed .sticky.fixed .top-bar {
+    margin-top: 39px;
+}
+
+body.toolbar-fixed.toolbar-horizontal.toolbar-tray-open .sticky.fixed .top-bar {
+    margin-top: 78px;
+}
+
+// Removes core arrow image from menu items.
+
+.top-bar {
+    .menu-item--collapsed,.menu-item--expanded {
+        list-style: none;
+    }
+}
+
+// Style the search form, if embedded in the Top Bar.
+
+.top-bar .search-block-form {
+    .form-item-keys, .form-actions {
+        display: inline-block;
+    }
+}
+
+// Dropdown button styling.
+
+.dropbutton-wrapper {
+    // Sub-themes will have to override this color, unfortunately.
+    background-color: #008CBA;
+    margin: 0 0 1.25rem;
+    .button {
+        margin-bottom: 0;
+        width: 100%;
+        text-align: left;
+    }
+}
+

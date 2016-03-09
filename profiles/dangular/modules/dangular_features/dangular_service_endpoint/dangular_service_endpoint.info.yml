@@ -1,0 +1,6 @@
+name: 'Service Endpoint'
+description: 'Provides a Services Endpoint for manipulating Views.'
+type: module
+core: 8.x
+version: 8.x-1.0
+package: Dangular

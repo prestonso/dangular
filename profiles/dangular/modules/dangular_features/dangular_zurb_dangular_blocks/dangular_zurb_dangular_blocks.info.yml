@@ -1,0 +1,8 @@
+name: 'Zurb/Dangular Blocks'
+description: 'Block settings for the presentation theme.'
+type: module
+core: 8.x
+dependencies:
+  - system
+version: 8.x-1.0
+package: Dangular

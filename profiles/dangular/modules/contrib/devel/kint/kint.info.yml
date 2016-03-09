@@ -1,0 +1,12 @@
+name: 'Devel Kint'
+type: module
+description: 'Wrapper for Kint debugging tool'
+package: Development
+core: 8.x
+tags:
+ - developer
+
+# Information added by drush on 2016-02-20
+version: '8.x-1.x-dev'
+project: 'devel'
+datestamp: 1455971165

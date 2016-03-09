@@ -1,0 +1,58 @@
+global:
+  version: VERSION
+  css:
+    base:
+      css/foundation.min.css: {}
+      css/zurb_foundation.min.css: {}
+  js:
+    js/foundation.min.js: {}
+    js/top_bar_active.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+
+development:
+  version: VERSION
+  css:
+    base:
+      css/normalize.css: {}
+      css/foundation.css: {}
+      css/zurb_foundation.min.css: {}
+  js:
+    js/foundation/foundation.alerts.js: {}
+    js/foundation/foundation.clearing.js: {}
+    js/foundation/foundation.cookie.js: {}
+    js/foundation/foundation.dropdown.js: {}
+    js/foundation/foundation.forms.js: {}
+    js/foundation/foundation.joyride.js: {}
+    js/foundation/foundation.magellan.js: {}
+    js/foundation/foundation.orbit.js: {}
+    js/foundation/foundation.placeholder.js: {}
+    js/foundation/foundation.reveal.js: {}
+    js/foundation/foundation.section.js: {}
+    js/foundation/foundation.tooltips.js: {}
+    js/foundation/foundation.topbar.js: {}
+    js/top_bar_active.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+
+status_in_reveal:
+  version: VERSION
+  js:
+    js/status_in_reveal.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+
+alert_close:
+  version: VERSION
+  js:
+    js/alert_close.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once

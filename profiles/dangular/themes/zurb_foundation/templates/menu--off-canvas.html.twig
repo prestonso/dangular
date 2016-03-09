@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * Theme override to display a menu in the off canvas region.
+ *
+ * Available variables:
+ * - menu_name: The machine name of the menu.
+ * - items: A nested list of menu items. Each menu item contains:
+ *   - attributes: HTML attributes for the menu item.
+ *   - below: The menu item child items.
+ *   - title: The menu link title.
+ *   - url: The menu link url, instance of \Drupal\Core\Url
+ *   - localized_options: Menu link localized options.
+ */
+#}
+{% import _self as menus %}
+
+{#
+  We call a macro which calls itself to render the full tree.
+  @see http://twig.sensiolabs.org/doc/tags/macro.html
+#}
+
+{{ menus.menu_links(items, attributes, 0, '') }}
+
+{% macro menu_links(items, attributes, menu_level, label) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% if menu_level == 0 %}
+      <ul class="off-canvas-list">
+    {% else %}
+      <ul{{ attributes }}>
+        <li class="back"><a href="#">{{ 'Back' | t }}</a></li>
+        {% if label is not empty %}
+          <li><label>{{ label }}</label></li>
+        {% endif %}
+    {% endif %}
+    {% for item in items %}
+      {% set item_classes = [ item.below is not empty ? 'has-submenu' ] %}
+      <li{{ item.attributes.addClass(item_classes) }}>
+        {{ link(item.title, item.url) }}
+        {% if item.below %}
+            {{ menus.menu_links(item.below, attributes, menu_level + 1, item.title) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
