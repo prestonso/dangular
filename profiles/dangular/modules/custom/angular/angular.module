@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function angular_theme() {
+  return [
+    'angular_template' => [
+      'variables' => [
+        'component' => NULL,
+        'parameters' => [],
+        'template_id' => NULL,
+      ],
+    ],
+  ];
+}
