@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -19,21 +19,62 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1, context_
             },
             function (http_1_1) {
                 http_1 = http_1_1;
-            }],
+            },
+            function (_1) {}],
         execute: function() {
             AppComponent = (function () {
                 function AppComponent(http) {
                     this.http = http;
-                    this.columns = 4;
+                    this.entity = null;
+                    this.columns = 0;
+                    this.classes = [];
+                    // Now we can use this.http for HTTP transactions!
                 }
+                AppComponent.prototype.ngOnInit = function () {
+                    var headers = new http_1.Headers({
+                        Accept: 'application/json'
+                    });
+                    var options = new http_1.RequestOptions({
+                        headers: headers
+                    });
+                    var self = this;
+                    this.http.get('/dangular-endpoint/view/dangular_image_grid', options)
+                        .toPromise()
+                        .then(function (result) {
+                        self.entity = result.json();
+                        self.entity.display.default.display_options.style.options.class.split(' ').forEach(function (c) {
+                            if (/^small-block-grid-[0-9]+$/.test(c)) {
+                                this.columns = parseInt(c.split('-')[3]);
+                            }
+                            else {
+                                this.classes.push(c);
+                            }
+                        }, self);
+                    });
+                };
+                AppComponent.prototype.getClasses = function () {
+                    return this.classes.concat('small-block-grid-' + this.columns).join(' ');
+                };
+                AppComponent.prototype.getColumns = function () {
+                    return this.columns;
+                };
                 AppComponent.prototype.setColumns = function (event) {
                     this.columns = event.target.value;
                 };
-                AppComponent.prototype.getClasses = function () {
-                    return 'clearing-thumbs small-block-grid-' + this.columns;
-                };
                 AppComponent.prototype.persist = function () {
-                    // Actually save the changes here.
+                    this.entity.display.default.display_options.style.options.class = this.getClasses();
+                    var headers = new http_1.Headers({
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    });
+                    var options = new http_1.RequestOptions({
+                        headers: headers
+                    });
+                    this.http.put('/dangular-endpoint/view/dangular_image_grid', JSON.stringify(this.entity), options)
+                        .toPromise()
+                        .then(function () {
+                        alert('saved!');
+                    });
                 };
                 AppComponent = __decorate([
                     core_1.Component({
@@ -41,7 +82,7 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1, context_
                         template: document.getElementById('views-view').innerHTML,
                         providers: [
                             http_1.HTTP_PROVIDERS
-                        ]
+                        ],
                     }), 
                     __metadata('design:paramtypes', [http_1.Http])
                 ], AppComponent);

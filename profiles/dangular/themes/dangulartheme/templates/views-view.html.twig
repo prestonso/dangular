@@ -42,7 +42,7 @@ dom_id ? 'js-view-dom-id-' ~ dom_id,
     <form>
         <div>
             <label>Columns</label>
-            <input type="number" min="1" max="8" [value]="columns" (change)="setColumns($event)" />
+            <input type="number" min="1" max="8" [value]="getColumns()" (change)="setColumns($event)" />
         </div>
         <div>
             <button type="submit" (click)="persist()">Save Changes</button>
