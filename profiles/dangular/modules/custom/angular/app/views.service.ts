@@ -17,6 +17,9 @@ import {
 // Y'know, when I figure out how to do it.
 import 'rxjs/Rx';
 
+// The Drupal object is global.
+declare var Drupal: any;
+
 @Injectable()
 export class Views
 {
