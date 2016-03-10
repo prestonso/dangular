@@ -30,7 +30,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
                      *
                      * @type {string}
                      */
-                    this.baseUrl = '/dangular-endpoint/view';
+                    this.baseUrl = Drupal.url('dangular-endpoint/view');
                     this.options = new http_1.RequestOptions({
                         headers: new http_1.Headers({
                             // We'll get internal server errors without the proper Accept
