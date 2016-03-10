@@ -8,7 +8,12 @@ import {
 
 @Component({
     selector: 'drupal-messages',
-    template: '<ul><li *ngFor="#message of messages" class="{{message.severity}}">{{message.text}}</li></ul>'
+    template: `
+<div [class.active]="messages.length" class="messages">
+    <ul><li *ngFor="#message of messages" class="{{message.severity}}">{{message.text}}</li></ul>
+    <button (click)="dismiss()">Dismiss</button>
+</div>
+`
 })
 export class DrupalMessages
 {
@@ -49,5 +54,13 @@ export class DrupalMessages
                 })
             }
         );
+    }
+
+    dismiss ()
+    {
+        while (this.messages.pop())
+        {
+            // NOP, we're just clearing the messages array.
+        }
     }
 }

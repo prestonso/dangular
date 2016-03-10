@@ -46,10 +46,14 @@ System.register(['angular2/core', '../services/message-queue'], function(exports
                         });
                     });
                 }
+                DrupalMessages.prototype.dismiss = function () {
+                    while (this.messages.pop()) {
+                    }
+                };
                 DrupalMessages = __decorate([
                     core_1.Component({
                         selector: 'drupal-messages',
-                        template: '<ul><li *ngFor="#message of messages" class="{{message.severity}}">{{message.text}}</li></ul>'
+                        template: "\n<div [class.active]=\"messages.length\" class=\"messages\">\n    <ul><li *ngFor=\"#message of messages\" class=\"{{message.severity}}\">{{message.text}}</li></ul>\n    <button (click)=\"dismiss()\">Dismiss</button>\n</div>\n"
                     }), 
                     __metadata('design:paramtypes', [message_queue_1.MessageQueue])
                 ], DrupalMessages);
