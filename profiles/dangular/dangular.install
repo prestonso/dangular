@@ -6,14 +6,9 @@
  * profile.
  */
 
-use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Config\InstallStorage;
-use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\node\Entity\NodeType;
 use Drupal\user\Entity\User;
-use Drupal\user\RoleInterface;
 use Drupal\shortcut\Entity\Shortcut;
+use \Drupal\node\Entity\Node;
 
 /**
  * Implements hook_install().
@@ -75,6 +70,28 @@ function dangular_install() {
     ->save(TRUE);
 
   // Generate content for the grid
-  drush_invoke_process('@self', 'generate-content', array('generate-content' => 24), array('types' => 'dangular_grid_item'));
+  $profile_path = drupal_get_path('profile', 'dangular');
+  $cages = file_scan_directory($profile_path . '/cages', '/./');
+  $path = explode('/', __FILE__);
+  array_pop($path);
+  array_pop($path);
+  array_pop($path);
+  $path = implode('/', $path);
+
+  foreach ($cages as $cage => $cage_data) {
+    // Create file object from remote URL.
+    $data = file_get_contents($path . '/' . $cage, FILE_USE_INCLUDE_PATH);
+    $file = file_save_data($data, 'public://' . $cage_data->name . '.jpg', FILE_EXISTS_REPLACE);
+
+    // Create node object with attached file.
+    $node = Node::create([
+      'type' => 'dangular_grid_item',
+      'title' => $cage_data->name,
+      'field_dangular_grid_image' => [
+          'target_id' => $file->id(),
+      ],
+    ]);
+    $node->save();
+  }
 }
 
