@@ -27,8 +27,23 @@ System.register(['angular2/core', './views.service', './components/drupal-messag
             DrupalView = (function () {
                 function DrupalView(views) {
                     this.views = views;
+                    /**
+                     * CSS classes applied to the view.
+                     *
+                     * @type {string}
+                     */
                     this.classes = '';
+                    /**
+                     * Whether the form has been submitted.
+                     *
+                     * @type {boolean}
+                     */
                     this.submitted = false;
+                    /**
+                     * Regular expression to find CSS classes with a column count.
+                     *
+                     * @type {RegExp}
+                     */
                     this.columnClass = /-block-grid-([0-9]+)/;
                     // Angular will take care of dependency injection here.
                 }
@@ -54,11 +69,8 @@ System.register(['angular2/core', './views.service', './components/drupal-messag
                     this.entity.display['default'].display_options.style.options['class'] = this.classes;
                 };
                 DrupalView.prototype.persist = function () {
-                    var self = this;
-                    self.submitted = true;
-                    this.views.save(this.entity).then(function () {
-                        self.submitted = false;
-                    });
+                    var _this = this;
+                    this.views.save(this.entity).then(function () { return _this.submitted = false; });
                 };
                 DrupalView = __decorate([
                     core_1.Component({
