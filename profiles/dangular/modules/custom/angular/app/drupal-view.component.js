@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', './views.service'], function(exports_1, context_1) {
+System.register(['angular2/core', './views.service', './components/drupal-messages'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,25 +10,40 @@ System.register(['angular2/core', 'angular2/http', './views.service'], function(
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, views_service_1;
+    var core_1, views_service_1, drupal_messages_1;
     var DrupalView;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (http_1_1) {
-                http_1 = http_1_1;
-            },
             function (views_service_1_1) {
                 views_service_1 = views_service_1_1;
+            },
+            function (drupal_messages_1_1) {
+                drupal_messages_1 = drupal_messages_1_1;
             }],
         execute: function() {
             DrupalView = (function () {
                 function DrupalView(views) {
                     this.views = views;
+                    /**
+                     * CSS classes applied to the view.
+                     *
+                     * @type {string}
+                     */
                     this.classes = '';
+                    /**
+                     * Whether the form has been submitted.
+                     *
+                     * @type {boolean}
+                     */
                     this.submitted = false;
+                    /**
+                     * Regular expression to find CSS classes with a column count.
+                     *
+                     * @type {RegExp}
+                     */
                     this.columnClass = /-block-grid-([0-9]+)/;
                     // Angular will take care of dependency injection here.
                 }
@@ -54,20 +69,19 @@ System.register(['angular2/core', 'angular2/http', './views.service'], function(
                     this.entity.display['default'].display_options.style.options['class'] = this.classes;
                 };
                 DrupalView.prototype.persist = function () {
-                    var self = this;
-                    self.submitted = true;
-                    this.views.save(this.entity).then(function () {
-                        self.submitted = false;
-                    });
+                    var _this = this;
+                    this.views.save(this.entity).then(function () { return _this.submitted = false; });
                 };
                 DrupalView = __decorate([
                     core_1.Component({
                         selector: 'drupal-view',
                         template: document.getElementById('views-view').innerHTML,
                         providers: [
-                            views_service_1.Views,
-                            http_1.HTTP_PROVIDERS
+                            views_service_1.Views
                         ],
+                        directives: [
+                            drupal_messages_1.DrupalMessages
+                        ]
                     }), 
                     __metadata('design:paramtypes', [views_service_1.Views])
                 ], DrupalView);

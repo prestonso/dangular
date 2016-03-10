@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', './services/message-queue', 'rxjs/Rx'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1;
+    var core_1, http_1, message_queue_1;
     var Views;
     return {
         setters:[
@@ -20,11 +20,15 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
             function (http_1_1) {
                 http_1 = http_1_1;
             },
+            function (message_queue_1_1) {
+                message_queue_1 = message_queue_1_1;
+            },
             function (_1) {}],
         execute: function() {
             Views = (function () {
-                function Views(http) {
+                function Views(http, messageQueue) {
                     this.http = http;
+                    this.messageQueue = messageQueue;
                     /**
                      * Base URL to the Views service endpoint.
                      *
@@ -61,11 +65,16 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
                  * @returns {Promise<Response>}
                  */
                 Views.prototype.save = function (view) {
-                    return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options).toPromise();
+                    var self = this;
+                    return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options)
+                        .toPromise()
+                        .then(function () {
+                        self.messageQueue.notify('The view has been saved!');
+                    });
                 };
                 Views = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_1.Http])
+                    __metadata('design:paramtypes', [http_1.Http, message_queue_1.MessageQueue])
                 ], Views);
                 return Views;
             }());

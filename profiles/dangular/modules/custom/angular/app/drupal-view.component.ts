@@ -12,22 +12,48 @@ import {
     Views
 } from './views.service';
 
+import {
+    DrupalMessages
+} from './components/drupal-messages';
+
 @Component({
-  selector: 'drupal-view',
-  template: document.getElementById('views-view').innerHTML,
-  providers: [
-      Views,
-      HTTP_PROVIDERS
-  ],
+    selector: 'drupal-view',
+    template: document.getElementById('views-view').innerHTML,
+    providers: [
+        Views
+    ],
+    directives: [
+        DrupalMessages
+    ]
 })
 export class DrupalView implements OnInit
 {
+    /**
+     * The view entity.
+     *
+     * @type {object}
+     */
     entity: any;
 
+    /**
+     * CSS classes applied to the view.
+     *
+     * @type {string}
+     */
     classes = '';
 
+    /**
+     * Whether the form has been submitted.
+     *
+     * @type {boolean}
+     */
     submitted = false;
 
+    /**
+     * Regular expression to find CSS classes with a column count.
+     *
+     * @type {RegExp}
+     */
     private columnClass = /-block-grid-([0-9]+)/;
 
     constructor (private views: Views)
@@ -73,15 +99,6 @@ export class DrupalView implements OnInit
 
     persist ()
     {
-        var self = this;
-
-        self.submitted = true;
-
-        this.views.save(this.entity).then(
-            function ()
-            {
-                self.submitted = false;
-            }
-        );
+        this.views.save(this.entity).then(() => this.submitted = false);
     }
 }
