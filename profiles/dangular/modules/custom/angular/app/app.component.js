@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', './views.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1;
+    var core_1, http_1, views_service_1;
     var AppComponent;
     return {
         setters:[
@@ -20,60 +20,44 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
             function (http_1_1) {
                 http_1 = http_1_1;
             },
-            function (_1) {}],
+            function (views_service_1_1) {
+                views_service_1 = views_service_1_1;
+            }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent(http) {
-                    this.http = http;
-                    this.entity = null;
-                    this.columns = 0;
-                    this.classes = [];
-                    // Now we can use this.http for HTTP transactions!
+                function AppComponent(views) {
+                    this.views = views;
+                    this.classes = '';
+                    this.submitted = false;
+                    this.columnClass = /-block-grid-([0-9]+)/;
+                    // Angular will take care of dependency injection here.
                 }
                 AppComponent.prototype.ngOnInit = function () {
-                    var headers = new http_1.Headers({
-                        Accept: 'application/json'
-                    });
-                    var options = new http_1.RequestOptions({
-                        headers: headers
-                    });
                     var self = this;
-                    this.http.get('/dangular-endpoint/view/dangular_image_grid', options)
-                        .toPromise()
-                        .then(function (result) {
-                        self.entity = result.json();
-                        self.entity.display.default.display_options.style.options.class.split(' ').forEach(function (c) {
-                            if (/^small-block-grid-[0-9]+$/.test(c)) {
-                                this.columns = parseInt(c.split('-')[3]);
-                            }
-                            else {
-                                this.classes.push(c);
-                            }
-                        }, self);
+                    this.views.load('dangular_image_grid').then(function (response) {
+                        self.entity = response.json();
+                        self.classes = self.entity.display['default'].display_options.style.options['class'];
                     });
-                };
-                AppComponent.prototype.getClasses = function () {
-                    return this.classes.concat('small-block-grid-' + this.columns).join(' ');
                 };
                 AppComponent.prototype.getColumns = function () {
-                    return this.columns;
+                    var match = this.classes.match(this.columnClass);
+                    return match ? parseInt(match[1]) : 0;
                 };
                 AppComponent.prototype.setColumns = function (event) {
-                    this.columns = event.target.value;
+                    var columns = event.target.value;
+                    if (this.columnClass.test(this.classes)) {
+                        this.classes = this.classes.replace(this.columnClass, '-block-grid-' + columns);
+                    }
+                    else {
+                        this.classes += ' small-block-grid-' + columns;
+                    }
+                    this.entity.display['default'].display_options.style.options['class'] = this.classes;
                 };
                 AppComponent.prototype.persist = function () {
-                    this.entity.display.default.display_options.style.options.class = this.getClasses();
-                    var headers = new http_1.Headers({
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json'
-                    });
-                    var options = new http_1.RequestOptions({
-                        headers: headers
-                    });
-                    this.http.put('/dangular-endpoint/view/dangular_image_grid', JSON.stringify(this.entity), options)
-                        .toPromise()
-                        .then(function () {
-                        alert('saved!');
+                    var self = this;
+                    self.submitted = true;
+                    this.views.save(this.entity).then(function () {
+                        self.submitted = false;
                     });
                 };
                 AppComponent = __decorate([
@@ -81,10 +65,11 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
                         selector: 'drupal-view',
                         template: document.getElementById('views-view').innerHTML,
                         providers: [
+                            views_service_1.Views,
                             http_1.HTTP_PROVIDERS
                         ],
                     }), 
-                    __metadata('design:paramtypes', [http_1.Http])
+                    __metadata('design:paramtypes', [views_service_1.Views])
                 ], AppComponent);
                 return AppComponent;
             }());
