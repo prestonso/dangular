@@ -49,7 +49,7 @@ dom_id ? 'js-view-dom-id-' ~ dom_id,
             <button type="submit" (click)="persist()" [disabled]="submitted">Save Changes</button>
         </div>
     </form>
-<div{{ attributes.addClass(classes) }}>
+<div{{ attributes.addClass(classes) }} [hidden]="!entity">
     {{ title_prefix }}
     {{ title }}
     {{ title_suffix }}
