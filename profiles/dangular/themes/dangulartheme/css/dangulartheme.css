@@ -5,9 +5,50 @@ body {
 	background: #eee;
 }
 
-#dangular_image_grid li {
+.clearing-thumbs li {
   transition: all 0.2s;
   transition-timing-function: ease-in-out;
   padding-left: 0;
   padding-bottom: 10px;
 }
+
+.messages {
+  left: -100%;
+  position: fixed;
+  transition: all 0.5s;
+  z-index: 2;
+}
+.messages.active {
+  left: 10px;
+}
+.messages ul {
+  margin: 0;
+  list-style: none;
+}
+.messages ul li {
+  background-color: #ebfbea;
+  border-left: 4px solid #8cba88;
+  box-shadow: 0 0 10px #888888;
+  margin: 0;
+  padding: 5px 15px 5px 10px;
+}
+.messages button {
+  height: 0;
+  text-indent: -1000px;
+  margin: 0;
+  padding: 0;
+}
+.messages button:after {
+  background-color: #8cba88;
+  border-radius: 50%;
+  content: 'x';
+  display: block;
+  height: 30px;
+  padding-top: 4px;
+  position: absolute;
+  right: -230px;
+  text-indent: 0;
+  top: -50px;
+  width: 30px;
+}
+
