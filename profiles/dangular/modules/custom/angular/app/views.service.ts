@@ -21,7 +21,7 @@ export class Views
      *
      * @type {string}
      */
-    private baseUrl = '/dangular-endpoint/view';
+    private baseUrl = Drupal.url('dangular-endpoint/view');
 
     /**
      * Base request options.
