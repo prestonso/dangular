@@ -1,0 +1,18 @@
+/* Make the images smoothly change size */
+
+
+body {
+	background: #555;
+}
+
+div#main {
+  background: #fff;
+}
+
+#dangular_image_grid li {
+  transition: all 1s;
+  transition-timing-function: ease-in-out;
+  transition-delay: .1s;
+  padding-left: 0px;
+}
+
