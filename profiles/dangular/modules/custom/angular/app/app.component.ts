@@ -14,14 +14,24 @@ import {
     DrupalView
 } from './drupal-view.component';
 
+import {
+    DrupalMessages
+} from './components/drupal-messages';
+
+import {
+    MessageQueue
+} from './services/message-queue';
+
 @Component({
     selector: 'body',
     template: document.body.innerHTML,
     providers: [
-        Views,
-        HTTP_PROVIDERS
+        HTTP_PROVIDERS,
+        MessageQueue,
+        Views
     ],
     directives: [
+        DrupalMessages,
         DrupalView
     ]
 })

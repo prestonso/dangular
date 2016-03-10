@@ -9,6 +9,10 @@ import {
     Response
 } from 'angular2/http';
 
+import {
+    MessageQueue
+} from './services/message-queue';
+
 // We only need .toPromise(), so methinks we should only import that.
 // Y'know, when I figure out how to do it.
 import 'rxjs/Rx';
@@ -30,7 +34,7 @@ export class Views
      */
     private options: RequestOptions;
 
-    constructor (private http: Http)
+    constructor (private http: Http, private messageQueue: MessageQueue)
     {
         this.options = new RequestOptions({
             headers: new Headers({
@@ -66,6 +70,15 @@ export class Views
      */
     save (view: any)
     {
-        return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options).toPromise();
+        var self = this;
+
+        return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options)
+            .toPromise()
+            .then(
+                function ()
+                {
+                    self.messageQueue.notify('The view has been saved!');
+                }
+            );
     }
 }

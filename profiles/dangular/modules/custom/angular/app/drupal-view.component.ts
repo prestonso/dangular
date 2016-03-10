@@ -12,13 +12,19 @@ import {
     Views
 } from './views.service';
 
+import {
+    DrupalMessages
+} from './components/drupal-messages';
+
 @Component({
-  selector: 'drupal-view',
-  template: document.getElementById('views-view').innerHTML,
-  providers: [
-      Views,
-      HTTP_PROVIDERS
-  ],
+    selector: 'drupal-view',
+    template: document.getElementById('views-view').innerHTML,
+    providers: [
+        Views
+    ],
+    directives: [
+        DrupalMessages
+    ]
 })
 export class DrupalView implements OnInit
 {

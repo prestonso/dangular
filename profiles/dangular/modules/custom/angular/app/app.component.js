@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', './views.service', './drupal-view.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', './views.service', './drupal-view.component', './components/drupal-messages', './services/message-queue'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', './views.service', './drupal-
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, views_service_1, drupal_view_component_1;
+    var core_1, http_1, views_service_1, drupal_view_component_1, drupal_messages_1, message_queue_1;
     var AppComponent;
     return {
         setters:[
@@ -25,6 +25,12 @@ System.register(['angular2/core', 'angular2/http', './views.service', './drupal-
             },
             function (drupal_view_component_1_1) {
                 drupal_view_component_1 = drupal_view_component_1_1;
+            },
+            function (drupal_messages_1_1) {
+                drupal_messages_1 = drupal_messages_1_1;
+            },
+            function (message_queue_1_1) {
+                message_queue_1 = message_queue_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -35,10 +41,12 @@ System.register(['angular2/core', 'angular2/http', './views.service', './drupal-
                         selector: 'body',
                         template: document.body.innerHTML,
                         providers: [
-                            views_service_1.Views,
-                            http_1.HTTP_PROVIDERS
+                            http_1.HTTP_PROVIDERS,
+                            message_queue_1.MessageQueue,
+                            views_service_1.Views
                         ],
                         directives: [
+                            drupal_messages_1.DrupalMessages,
                             drupal_view_component_1.DrupalView
                         ]
                     }), 
