@@ -13,6 +13,5 @@ div#main {
   transition: all 1s;
   transition-timing-function: ease-in-out;
   transition-delay: .1s;
-  padding-left: 0px;
+  padding-left: 0;
 }
-
