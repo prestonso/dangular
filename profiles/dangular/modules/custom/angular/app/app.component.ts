@@ -4,7 +4,8 @@ import {
 } from 'angular2/core';
 
 import {
-    HTTP_PROVIDERS
+    HTTP_PROVIDERS,
+    Response
 } from 'angular2/http';
 
 import {
@@ -21,57 +22,66 @@ import {
 })
 export class AppComponent implements OnInit
 {
-    private entity: any;
+    entity: any;
+
+    classes = '';
+
+    submitted = false;
+
+    private columnClass = /-block-grid-([0-9]+)/;
 
     constructor (private views: Views)
     {
         // Angular will take care of dependency injection here.
     }
 
-    columns = 0;
-
-    classes: string[] = [];
-
-    ngOnInit () {
+    ngOnInit ()
+    {
         var self = this;
 
-        this.views.load('dangular_image_grid')
-            .then(function (response) {
+        this.views.load('dangular_image_grid').then(
+            function (response: Response)
+            {
                 self.entity = response.json();
-
-                self.entity.display.default.display_options.style.options.class.split(' ').forEach(function (c: string) {
-                    if (/^small-block-grid-[0-9]+$/.test(c)) {
-                        this.columns = parseInt(c.split('-')[3]);
-                    }
-                    else {
-                        this.classes.push(c);
-                    }
-                }, self);
-            });
-    }
-
-    getClasses ()
-    {
-        return this.classes.concat('small-block-grid-' + this.columns).join(' ');
+                self.classes = self.entity.display['default'].display_options.style.options['class'];
+            }
+        );
     }
 
     getColumns ()
     {
-        return this.columns;
+        var match = this.classes.match(this.columnClass);
+
+        return match ? parseInt(match[1]) : 0;
     }
 
-    setColumns (event)
+    setColumns (event: any)
     {
-        this.columns = event.target.value;
+        var columns = event.target.value;
+
+        if (this.columnClass.test(this.classes))
+        {
+            this.classes = this.classes.replace(this.columnClass, '-block-grid-' + columns);
+        }
+        else
+        {
+            this.classes += ' small-block-grid-' + columns;
+        }
+
+        this.entity.display['default'].display_options.style.options['class'] = this.classes;
     }
 
     persist ()
     {
-        this.entity.display.default.display_options.style.options.class = this.getClasses();
+        var self = this;
 
-        this.views.save(this.entity)
-            .then(function () {
-                alert('Saved!');
-            });
+        self.submitted = true;
+
+        this.views.save(this.entity).then(
+            function ()
+            {
+                self.submitted = false;
+            }
+        );
     }
 }

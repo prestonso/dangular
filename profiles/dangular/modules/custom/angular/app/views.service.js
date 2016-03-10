@@ -50,8 +50,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
                  * @returns {Promise<Response>}
                  */
                 Views.prototype.load = function (id) {
-                    return this.http.get(this.baseUrl + '/' + id, this.options)
-                        .toPromise();
+                    return this.http.get(this.baseUrl + '/' + id, this.options).toPromise();
                 };
                 /**
                  * Saves an existing view entity.
@@ -62,8 +61,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
                  * @returns {Promise<Response>}
                  */
                 Views.prototype.save = function (view) {
-                    return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options)
-                        .toPromise();
+                    return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options).toPromise();
                 };
                 Views = __decorate([
                     core_1.Injectable(), 

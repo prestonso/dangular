@@ -53,8 +53,7 @@ export class Views
      */
     load (id)
     {
-        return this.http.get(this.baseUrl + '/' + id, this.options)
-            .toPromise();
+        return this.http.get(this.baseUrl + '/' + id, this.options).toPromise();
     }
 
     /**
@@ -67,7 +66,6 @@ export class Views
      */
     save (view: any)
     {
-        return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options)
-            .toPromise();
+        return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options).toPromise();
     }
 }

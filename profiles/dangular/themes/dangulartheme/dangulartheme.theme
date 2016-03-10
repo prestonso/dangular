@@ -51,7 +51,6 @@ function dangulartheme_preprocess_views_view(&$variables) {
  * Implements template_preprocess_views_view_list().
  */
 function dangulartheme_preprocess_views_view_list(array &$variables) {
-  $variables['list']['attributes']['[hidden]'] = '!entity';
-  $variables['list']['attributes']['[class]'] = 'getClasses()';
+  $variables['list']['attributes']['[class]'] = 'classes';
   unset($variables['list']['attributes']['class']);
 }
