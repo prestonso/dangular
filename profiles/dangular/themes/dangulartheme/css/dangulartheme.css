@@ -15,3 +15,14 @@ div#main {
   transition-delay: .1s;
   padding-left: 0;
 }
+
+.off-canvas-wrap {
+  transition: all;
+  transition-duration: 500ms;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+  padding-left: 0;
+}
+.off-canvas-wrap.move-left {
+  padding-left: 250px;
+}
