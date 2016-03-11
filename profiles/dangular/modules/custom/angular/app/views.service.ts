@@ -13,6 +13,8 @@ import {
     MessageQueue
 } from './services/message-queue';
 
+import { View } from './view';
+
 // We only need .toPromise(), so methinks we should only import that.
 // Y'know, when I figure out how to do it.
 import 'rxjs/Rx';
@@ -37,6 +39,15 @@ export class Views
      */
     private options: RequestOptions;
 
+    /**
+     * Cache of view entities that have been loaded or are currently being
+     * loaded asynchronously, keyed by view ID. Each view is wrapped by a
+     * Promise.
+     *
+     * @type {{}}
+     */
+    private views = {};
+
     constructor (private http: Http, private messageQueue: MessageQueue)
     {
         this.options = new RequestOptions({
@@ -56,11 +67,23 @@ export class Views
      * @param {string} id
      *   The view ID.
      *
-     * @returns {Promise<Response>}
+     * @returns {Promise<View>}
      */
     load (id)
     {
-        return this.http.get(this.baseUrl + '/' + id, this.options).toPromise();
+        if (! (id in this.views))
+        {
+            this.views[id] = this.http.get(this.baseUrl + '/' + id, this.options)
+                .toPromise()
+                .then(
+                    function (response: Response)
+                    {
+                        return new View(response.json());
+                    }
+                );
+        }
+
+        return this.views[id];
     }
 
     /**
@@ -71,16 +94,19 @@ export class Views
      *
      * @returns {Promise<Response>}
      */
-    save (view: any)
+    save (view: View)
     {
-        var self = this;
+        var self = this, id = view.id();
 
-        return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options)
+        return this.http.put(this.baseUrl + '/' + id, view.toJSON(), this.options)
             .toPromise()
             .then(
                 function ()
                 {
                     self.messageQueue.notify('The view has been saved!');
+
+                    // Destroy the cached promise; the next load will go to the server.
+                    delete self.views[id];
                 }
             );
     }
