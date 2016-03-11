@@ -90,4 +90,12 @@ body {
   width: 100%;
 }
 
+/* Editable affordance */
+
+#views-view:hover,
+#views-view:focus {
+  box-shadow: 0 0 0 2px #74b7ff;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
 
