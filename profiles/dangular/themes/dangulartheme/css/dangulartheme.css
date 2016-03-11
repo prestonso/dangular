@@ -52,3 +52,26 @@ body {
   width: 30px;
 }
 
+.off-canvas-wrap {
+  transition: all;
+  transition-duration: 500ms;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+  padding-left: 0;
+}
+.off-canvas-wrap.move-left {
+  padding-left: 250px;
+}
+
+.off-canvas-wrap form {
+  padding: 1em;
+}
+
+.off-canvas-wrap form label,
+.off-canvas-wrap form p {
+  color: #ddd;
+}
+
+.off-canvas-wrap .button {
+  width: 100%;
+}

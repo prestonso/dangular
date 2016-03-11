@@ -37,45 +37,37 @@ set classes = [
 dom_id ? 'js-view-dom-id-' ~ dom_id,
 ]
 %}
-<drupal-view id="{{ view_id }}"></drupal-view>
+<drupal-view></drupal-view>
 <template id="views-view">
     <drupal-messages></drupal-messages>
-    <form [hidden]="!entity">
-        <div>
-            <label>Columns</label>
-            <input type="number" min="1" max="8" [value]="getColumns()" (change)="setColumns($event)" />
-        </div>
-        <div>
-            <button type="submit" (click)="persist()" [disabled]="submitted">Save Changes</button>
-        </div>
-    </form>
-<div{{ attributes.addClass(classes) }} [hidden]="!entity">
-    {{ title_prefix }}
-    {{ title }}
-    {{ title_suffix }}
+    <drupal-view-config-form></drupal-view-config-form>
+    <div{{ attributes.addClass(classes) }}>
+        {{ title_prefix }}
+        {{ title }}
+        {{ title_suffix }}
 
-    {% if header %}
-        <header>
-            {{ header }}
-        </header>
-    {% endif %}
+        {% if header %}
+            <header>
+                {{ header }}
+            </header>
+        {% endif %}
 
-    {{ exposed }}
-    {{ attachment_before }}
+        {{ exposed }}
+        {{ attachment_before }}
 
-    {{ rows }}
-    {{ empty }}
-    {{ pager }}
+        {{ rows }}
+        {{ empty }}
+        {{ pager }}
 
-    {{ attachment_after }}
-    {{ more }}
+        {{ attachment_after }}
+        {{ more }}
 
-    {% if footer %}
-        <footer>
-            {{ footer }}
-        </footer>
-    {% endif %}
+        {% if footer %}
+            <footer>
+                {{ footer }}
+            </footer>
+        {% endif %}
 
-    {{ feed_icons }}
-</div>
+        {{ feed_icons }}
+    </div>
 </template>

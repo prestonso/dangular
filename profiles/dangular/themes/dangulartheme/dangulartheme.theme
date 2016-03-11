@@ -42,8 +42,6 @@ function dangulartheme_preprocess_page(&$variables) {
  * Implements template_preprocess_views_view().
  */
 function dangulartheme_preprocess_views_view(&$variables) {
-  // The view ID must be knownst to the persistence mechanism.
-  $variables['view_id'] = $variables['view']->storage->id();
   $variables['view_array']['view_build']['#attached']['library'][] = 'angular/integration';
 }
 

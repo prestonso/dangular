@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', './services/message-queue', 'rxjs/Rx'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', './services/message-queue', './view', 'rxjs/Rx'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, message_queue_1;
+    var core_1, http_1, message_queue_1, view_1;
     var Views;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
             },
             function (message_queue_1_1) {
                 message_queue_1 = message_queue_1_1;
+            },
+            function (view_1_1) {
+                view_1 = view_1_1;
             },
             function (_1) {}],
         execute: function() {
@@ -35,6 +38,14 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                      * @type {string}
                      */
                     this.baseUrl = Drupal.url('dangular-endpoint/view');
+                    /**
+                     * Cache of view entities that have been loaded or are currently being
+                     * loaded asynchronously, keyed by view ID. Each view is wrapped by a
+                     * Promise.
+                     *
+                     * @type {{}}
+                     */
+                    this.views = {};
                     this.options = new http_1.RequestOptions({
                         headers: new http_1.Headers({
                             // We'll get internal server errors without the proper Accept
@@ -51,10 +62,17 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                  * @param {string} id
                  *   The view ID.
                  *
-                 * @returns {Promise<Response>}
+                 * @returns {Promise<View>}
                  */
                 Views.prototype.load = function (id) {
-                    return this.http.get(this.baseUrl + '/' + id, this.options).toPromise();
+                    if (!(id in this.views)) {
+                        this.views[id] = this.http.get(this.baseUrl + '/' + id, this.options)
+                            .toPromise()
+                            .then(function (response) {
+                            return new view_1.View(response.json());
+                        });
+                    }
+                    return this.views[id];
                 };
                 /**
                  * Saves an existing view entity.
@@ -65,11 +83,13 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                  * @returns {Promise<Response>}
                  */
                 Views.prototype.save = function (view) {
-                    var self = this;
-                    return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options)
+                    var self = this, id = view.id();
+                    return this.http.put(this.baseUrl + '/' + id, view.toJSON(), this.options)
                         .toPromise()
                         .then(function () {
                         self.messageQueue.notify('The view has been saved!');
+                        // Destroy the cached promise; the next load will go to the server.
+                        delete self.views[id];
                     });
                 };
                 Views = __decorate([
