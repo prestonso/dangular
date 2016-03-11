@@ -17,15 +17,14 @@ import {
 } from './components/drupal-messages';
 
 import { View } from './view';
+import { DrupalViewConfigForm } from './drupal-view-config-form';
 
 @Component({
     selector: 'drupal-view',
     template: document.getElementById('views-view').innerHTML,
-    providers: [
-        Views
-    ],
     directives: [
-        DrupalMessages
+        DrupalMessages,
+        DrupalViewConfigForm
     ]
 })
 export class DrupalView implements OnInit
@@ -37,19 +36,7 @@ export class DrupalView implements OnInit
      */
     entity: any;
 
-    /**
-     * Whether the form has been submitted.
-     *
-     * @type {boolean}
-     */
-    submitted = false;
-
-    /**
-     * Regular expression to find CSS classes with a column count.
-     *
-     * @type {RegExp}
-     */
-    private columnClass = /-block-grid-([0-9]+)/;
+    classes = '';
 
     constructor (private views: Views)
     {
@@ -64,36 +51,13 @@ export class DrupalView implements OnInit
             function (view: View)
             {
                 self.entity = view;
+                self.classes = view.getClasses();
+                view.classes$.subscribe(
+                    function (the_classes) {
+                        self.classes = the_classes;
+                    }
+                );
             }
         );
-    }
-
-    getColumns ()
-    {
-        var match = this.entity.getClasses().match(this.columnClass);
-
-        return match ? parseInt(match[1]) : 0;
-    }
-
-    setColumns (event: any)
-    {
-        var columns = event.target.value;
-        var classes = this.entity.getClasses();
-
-        if (this.columnClass.test(classes))
-        {
-            classes = classes.replace(this.columnClass, '-block-grid-' + columns);
-        }
-        else
-        {
-            classes += ' small-block-grid-' + columns;
-        }
-
-        this.entity.setClasses(classes);
-    }
-
-    persist ()
-    {
-        this.views.save(this.entity).then(() => this.submitted = false);
     }
 }

@@ -40,15 +40,7 @@ dom_id ? 'js-view-dom-id-' ~ dom_id,
 <drupal-view></drupal-view>
 <template id="views-view">
     <drupal-messages></drupal-messages>
-    <form template="ngIf:entity">
-        <div>
-            <label>Columns</label>
-            <input type="number" min="1" max="8" [value]="getColumns()" (change)="setColumns($event)" />
-        </div>
-        <div>
-            <button type="submit" (click)="persist()" [disabled]="submitted">Save Changes</button>
-        </div>
-    </form>
+    <drupal-view-config-form></drupal-view-config-form>
 <div{{ attributes.addClass(classes) }} template="ngIf:entity">
     {{ title_prefix }}
     {{ title }}

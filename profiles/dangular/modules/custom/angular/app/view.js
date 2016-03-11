@@ -1,18 +1,22 @@
-System.register(['rxjs/Subject'], function(exports_1, context_1) {
+System.register(['rxjs/Observable', 'rxjs/add/operator/share'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var Subject_1;
+    var Observable_1;
     var View;
     return {
         setters:[
-            function (Subject_1_1) {
-                Subject_1 = Subject_1_1;
-            }],
+            function (Observable_1_1) {
+                Observable_1 = Observable_1_1;
+            },
+            function (_1) {}],
         execute: function() {
             View = (function () {
                 function View(entity) {
-                    this.classes = new Subject_1.Subject();
+                    var self = this;
                     this.entity = entity;
+                    this.classes$ = new Observable_1.Observable(function (observer) {
+                        self._classesObserver = observer;
+                    }).share();
                 }
                 View.prototype.id = function () {
                     return this.entity.id;
@@ -26,7 +30,7 @@ System.register(['rxjs/Subject'], function(exports_1, context_1) {
                 View.prototype.setClasses = function (classes) {
                     this.entity.display['default'].display_options.style.options['class'] = classes;
                     // Allow external code to react.
-                    this.classes.next(classes);
+                    this._classesObserver.next(classes);
                 };
                 return View;
             }());

@@ -22,6 +22,8 @@ import {
     MessageQueue
 } from './services/message-queue';
 
+import { DrupalViewConfigForm } from './drupal-view-config-form';
+
 @Component({
     selector: 'body',
     template: document.body.innerHTML,
@@ -32,7 +34,8 @@ import {
     ],
     directives: [
         DrupalMessages,
-        DrupalView
+        DrupalView,
+        DrupalViewConfigForm
     ]
 })
 export class AppComponent
