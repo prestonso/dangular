@@ -18,7 +18,7 @@ import { View } from './view';
             <input type="number" min="1" max="8" [value]="getColumns()" (change)="setColumns($event)" />
         </div>
         <div>
-            <button type="submit" class="close-off-canvas button" (click)="persist()" [disabled]="submitted">Save Changes</button>
+            <button type="submit" class="button" (click)="persist()" [disabled]="submitted">Save Changes</button>
         </div>
     </form>
 `

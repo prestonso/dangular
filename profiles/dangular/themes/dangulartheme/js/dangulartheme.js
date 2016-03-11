@@ -10,7 +10,10 @@
    */
   Drupal.behaviors.closeOffCanvas = {
     attach: function (context, settings) {
-      
+      $('.close-off-canvas').on('click', function () {
+        console.log('clicked');
+        $('.off-canvas-wrap').removeClass('move-left');
+      });
     }
   };
 

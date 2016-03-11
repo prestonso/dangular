@@ -67,7 +67,7 @@ System.register(['angular2/core', './views.service'], function(exports_1, contex
                 DrupalViewConfigForm = __decorate([
                     core_1.Component({
                         selector: 'drupal-view-config-form',
-                        template: "\n    <form template=\"ngIf:entity\">\n        <div>\n            <label>Columns</label>\n            <input type=\"number\" min=\"1\" max=\"8\" [value]=\"getColumns()\" (change)=\"setColumns($event)\" />\n        </div>\n        <div>\n            <button type=\"submit\" class=\"close-off-canvas button\" (click)=\"persist()\" [disabled]=\"submitted\">Save Changes</button>\n        </div>\n    </form>\n"
+                        template: "\n    <form template=\"ngIf:entity\">\n        <div>\n            <label>Columns</label>\n            <input type=\"number\" min=\"1\" max=\"8\" [value]=\"getColumns()\" (change)=\"setColumns($event)\" />\n        </div>\n        <div>\n            <button type=\"submit\" class=\"button\" (click)=\"persist()\" [disabled]=\"submitted\">Save Changes</button>\n        </div>\n    </form>\n"
                     }), 
                     __metadata('design:paramtypes', [views_service_1.Views])
                 ], DrupalViewConfigForm);
