@@ -74,7 +74,7 @@ body {
 }
 
 .off-canvas-wrap h3  {
-  Font-size: 1.2em;
+  font-size: 1.2em;
   font-weight: bold;
   color: #ddd;
   padding-top: 1em;
@@ -98,4 +98,3 @@ body {
   -webkit-transition: all .5s;
   transition: all .5s;
 }
-
