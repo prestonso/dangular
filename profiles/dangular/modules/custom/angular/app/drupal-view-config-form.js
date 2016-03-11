@@ -61,6 +61,7 @@ System.register(['angular2/core', './views.service'], function(exports_1, contex
                 };
                 DrupalViewConfigForm.prototype.persist = function () {
                     var _this = this;
+                    this.submitted = true;
                     this.views.save(this.entity).then(function () { return _this.submitted = false; });
                 };
                 DrupalViewConfigForm = __decorate([

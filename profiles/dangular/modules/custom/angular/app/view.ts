@@ -4,46 +4,59 @@ import 'rxjs/add/operator/share';
 
 export class View
 {
+    /**
+     * The config entity.
+     *
+     * @type {object}
+     */
     private entity: any;
 
-    _classesObserver: Observer<string>;
+    /**
+     * Stream of changes to the view's CSS class list.
+     *
+     * @type {Observer<string>}
+     */
+    private _classes: Observer<string>;
 
+    /**
+     * Subscriber for changes to the view's CSS class list.
+     *
+     * @type {Observable<string>}
+     */
     classes$: Observable<string>;
 
+    /**
+     * @param {object} entity
+     *   The config entity.
+     */
     constructor (entity: any)
     {
-        var self = this;
-
         this.entity = entity;
 
-        this.classes$ = new Observable<string>(
-            function (observer)
-            {
-                self._classesObserver = observer;
-            }
-        ).share();
+        // Set up a public subscriber for changes to the view's CSS class list.
+        this.classes$ = new Observable<string>(observer => this._classes = observer).share();
     }
 
-    id ()
+    id (): string
     {
         return this.entity.id;
     }
 
-    toJSON ()
+    toJSON (): string
     {
         return JSON.stringify(this.entity);
     }
 
-    getClasses ()
+    getClasses (): string
     {
         return this.entity.display['default'].display_options.style.options['class'];
     }
 
-    setClasses (classes: string)
+    setClasses (classes: string): void
     {
         this.entity.display['default'].display_options.style.options['class'] = classes;
 
-        // Allow external code to react.
-        this._classesObserver.next(classes);
+        // Push the new class list to subscribers.
+        this._classes.next(classes);
     }
 }

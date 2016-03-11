@@ -11,12 +11,15 @@ System.register(['rxjs/Observable', 'rxjs/add/operator/share'], function(exports
             function (_1) {}],
         execute: function() {
             View = (function () {
+                /**
+                 * @param {object} entity
+                 *   The config entity.
+                 */
                 function View(entity) {
-                    var self = this;
+                    var _this = this;
                     this.entity = entity;
-                    this.classes$ = new Observable_1.Observable(function (observer) {
-                        self._classesObserver = observer;
-                    }).share();
+                    // Set up a public subscriber for changes to the view's CSS class list.
+                    this.classes$ = new Observable_1.Observable(function (observer) { return _this._classes = observer; }).share();
                 }
                 View.prototype.id = function () {
                     return this.entity.id;
@@ -29,8 +32,8 @@ System.register(['rxjs/Observable', 'rxjs/add/operator/share'], function(exports
                 };
                 View.prototype.setClasses = function (classes) {
                     this.entity.display['default'].display_options.style.options['class'] = classes;
-                    // Allow external code to react.
-                    this._classesObserver.next(classes);
+                    // Push the new class list to subscribers.
+                    this._classes.next(classes);
                 };
                 return View;
             }());

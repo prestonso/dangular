@@ -30,17 +30,19 @@ System.register(['angular2/core', './views.service', './components/drupal-messag
             DrupalView = (function () {
                 function DrupalView(views) {
                     this.views = views;
+                    /**
+                     * The CSS classes to apply to the view.
+                     *
+                     * @type {string}
+                     */
                     this.classes = '';
                     // Angular will take care of dependency injection here.
                 }
                 DrupalView.prototype.ngOnInit = function () {
                     var self = this;
                     this.views.load('dangular_image_grid').then(function (view) {
-                        self.entity = view;
                         self.classes = view.getClasses();
-                        view.classes$.subscribe(function (the_classes) {
-                            self.classes = the_classes;
-                        });
+                        view.classes$.subscribe(function (classes) { return self.classes = classes; });
                     });
                 };
                 DrupalView = __decorate([

@@ -4,17 +4,8 @@ import {
 } from 'angular2/core';
 
 import {
-    HTTP_PROVIDERS,
-    Response
-} from 'angular2/http';
-
-import {
     Views
 } from './views.service';
-
-import {
-    DrupalMessages
-} from './components/drupal-messages';
 
 import { View } from './view';
 
@@ -98,6 +89,7 @@ export class DrupalViewConfigForm implements OnInit
 
     persist ()
     {
+        this.submitted = true;
         this.views.save(this.entity).then(() => this.submitted = false);
     }
 }

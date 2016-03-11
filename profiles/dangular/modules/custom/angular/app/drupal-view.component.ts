@@ -4,11 +4,6 @@ import {
 } from 'angular2/core';
 
 import {
-    HTTP_PROVIDERS,
-    Response
-} from 'angular2/http';
-
-import {
     Views
 } from './views.service';
 
@@ -30,12 +25,10 @@ import { DrupalViewConfigForm } from './drupal-view-config-form';
 export class DrupalView implements OnInit
 {
     /**
-     * The view entity.
+     * The CSS classes to apply to the view.
      *
-     * @type {object}
+     * @type {string}
      */
-    entity: any;
-
     classes = '';
 
     constructor (private views: Views)
@@ -50,13 +43,8 @@ export class DrupalView implements OnInit
         this.views.load('dangular_image_grid').then(
             function (view: View)
             {
-                self.entity = view;
                 self.classes = view.getClasses();
-                view.classes$.subscribe(
-                    function (the_classes) {
-                        self.classes = the_classes;
-                    }
-                );
+                view.classes$.subscribe(classes => self.classes = classes);
             }
         );
     }

@@ -38,6 +38,13 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                      * @type {string}
                      */
                     this.baseUrl = Drupal.url('dangular-endpoint/view');
+                    /**
+                     * Cache of view entities that have been loaded or are currently being
+                     * loaded asynchronously, keyed by view ID. Each view is wrapped by a
+                     * Promise.
+                     *
+                     * @type {{}}
+                     */
                     this.views = {};
                     this.options = new http_1.RequestOptions({
                         headers: new http_1.Headers({
@@ -55,7 +62,7 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                  * @param {string} id
                  *   The view ID.
                  *
-                 * @returns {Promise<Response>}
+                 * @returns {Promise<View>}
                  */
                 Views.prototype.load = function (id) {
                     if (!(id in this.views)) {
@@ -77,7 +84,7 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                  */
                 Views.prototype.save = function (view) {
                     var self = this, id = view.id();
-                    return this.http.put(this.baseUrl + '/' + id(), view.toJSON(), this.options)
+                    return this.http.put(this.baseUrl + '/' + id, view.toJSON(), this.options)
                         .toPromise()
                         .then(function () {
                         self.messageQueue.notify('The view has been saved!');

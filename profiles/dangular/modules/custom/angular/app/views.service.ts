@@ -39,7 +39,14 @@ export class Views
      */
     private options: RequestOptions;
 
-    private views: any = {};
+    /**
+     * Cache of view entities that have been loaded or are currently being
+     * loaded asynchronously, keyed by view ID. Each view is wrapped by a
+     * Promise.
+     *
+     * @type {{}}
+     */
+    private views = {};
 
     constructor (private http: Http, private messageQueue: MessageQueue)
     {
@@ -60,7 +67,7 @@ export class Views
      * @param {string} id
      *   The view ID.
      *
-     * @returns {Promise<Response>}
+     * @returns {Promise<View>}
      */
     load (id)
     {
@@ -91,7 +98,7 @@ export class Views
     {
         var self = this, id = view.id();
 
-        return this.http.put(this.baseUrl + '/' + id(), view.toJSON(), this.options)
+        return this.http.put(this.baseUrl + '/' + id, view.toJSON(), this.options)
             .toPromise()
             .then(
                 function ()
