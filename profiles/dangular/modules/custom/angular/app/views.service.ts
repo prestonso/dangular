@@ -13,6 +13,8 @@ import {
     MessageQueue
 } from './services/message-queue';
 
+import { View } from './view';
+
 // We only need .toPromise(), so methinks we should only import that.
 // Y'know, when I figure out how to do it.
 import 'rxjs/Rx';
@@ -69,7 +71,7 @@ export class Views
                 .then(
                     function (response: Response)
                     {
-                        return response.json();
+                        return new View(response.json());
                     }
                 );
         }
@@ -85,11 +87,11 @@ export class Views
      *
      * @returns {Promise<Response>}
      */
-    save (view: any)
+    save (view: View)
     {
-        var self = this;
+        var self = this, id = view.id();
 
-        return this.http.put(this.baseUrl + '/' + view.id, JSON.stringify(view), this.options)
+        return this.http.put(this.baseUrl + '/' + id(), view.toJSON(), this.options)
             .toPromise()
             .then(
                 function ()
@@ -97,7 +99,7 @@ export class Views
                     self.messageQueue.notify('The view has been saved!');
 
                     // Destroy the cached promise; the next load will go to the server.
-                    delete self.views[view.id];
+                    delete self.views[id];
                 }
             );
     }

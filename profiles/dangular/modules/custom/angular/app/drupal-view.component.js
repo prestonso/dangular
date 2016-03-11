@@ -28,12 +28,6 @@ System.register(['angular2/core', './views.service', './components/drupal-messag
                 function DrupalView(views) {
                     this.views = views;
                     /**
-                     * CSS classes applied to the view.
-                     *
-                     * @type {string}
-                     */
-                    this.classes = '';
-                    /**
                      * Whether the form has been submitted.
                      *
                      * @type {boolean}
@@ -51,22 +45,22 @@ System.register(['angular2/core', './views.service', './components/drupal-messag
                     var self = this;
                     this.views.load('dangular_image_grid').then(function (view) {
                         self.entity = view;
-                        self.classes = self.entity.display['default'].display_options.style.options['class'];
                     });
                 };
                 DrupalView.prototype.getColumns = function () {
-                    var match = this.classes.match(this.columnClass);
+                    var match = this.entity.getClasses().match(this.columnClass);
                     return match ? parseInt(match[1]) : 0;
                 };
                 DrupalView.prototype.setColumns = function (event) {
                     var columns = event.target.value;
-                    if (this.columnClass.test(this.classes)) {
-                        this.classes = this.classes.replace(this.columnClass, '-block-grid-' + columns);
+                    var classes = this.entity.getClasses();
+                    if (this.columnClass.test(classes)) {
+                        classes = classes.replace(this.columnClass, '-block-grid-' + columns);
                     }
                     else {
-                        this.classes += ' small-block-grid-' + columns;
+                        classes += ' small-block-grid-' + columns;
                     }
-                    this.entity.display['default'].display_options.style.options['class'] = this.classes;
+                    this.entity.setClasses(classes);
                 };
                 DrupalView.prototype.persist = function () {
                     var _this = this;

@@ -16,6 +16,8 @@ import {
     DrupalMessages
 } from './components/drupal-messages';
 
+import { View } from './view';
+
 @Component({
     selector: 'drupal-view',
     template: document.getElementById('views-view').innerHTML,
@@ -34,13 +36,6 @@ export class DrupalView implements OnInit
      * @type {object}
      */
     entity: any;
-
-    /**
-     * CSS classes applied to the view.
-     *
-     * @type {string}
-     */
-    classes = '';
 
     /**
      * Whether the form has been submitted.
@@ -66,17 +61,16 @@ export class DrupalView implements OnInit
         var self = this;
 
         this.views.load('dangular_image_grid').then(
-            function (view: any)
+            function (view: View)
             {
                 self.entity = view;
-                self.classes = self.entity.display['default'].display_options.style.options['class'];
             }
         );
     }
 
     getColumns ()
     {
-        var match = this.classes.match(this.columnClass);
+        var match = this.entity.getClasses().match(this.columnClass);
 
         return match ? parseInt(match[1]) : 0;
     }
@@ -84,17 +78,18 @@ export class DrupalView implements OnInit
     setColumns (event: any)
     {
         var columns = event.target.value;
+        var classes = this.entity.getClasses();
 
-        if (this.columnClass.test(this.classes))
+        if (this.columnClass.test(classes))
         {
-            this.classes = this.classes.replace(this.columnClass, '-block-grid-' + columns);
+            classes = classes.replace(this.columnClass, '-block-grid-' + columns);
         }
         else
         {
-            this.classes += ' small-block-grid-' + columns;
+            classes += ' small-block-grid-' + columns;
         }
 
-        this.entity.display['default'].display_options.style.options['class'] = this.classes;
+        this.entity.setClasses(classes);
     }
 
     persist ()
