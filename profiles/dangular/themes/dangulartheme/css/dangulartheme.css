@@ -26,3 +26,16 @@ div#main {
 .off-canvas-wrap.move-left {
   padding-left: 250px;
 }
+
+.off-canvas-wrap form {
+  padding: 1em;
+}
+
+.off-canvas-wrap form label,
+.off-canvas-wrap form p {
+  color: #ddd;
+}
+
+.off-canvas-wrap .button {
+  width: 100%;
+}
