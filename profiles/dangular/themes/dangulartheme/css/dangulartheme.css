@@ -92,8 +92,8 @@ body {
 
 /* Editable affordance */
 
-.views-element-container:hover,
-.views-element-container:focus {
+.large-12:hover,
+.large-12:focus {
  box-shadow: 0 0 0 2px #74b7ff;
  -webkit-transition: all .5s;
  transition: all .5s;
