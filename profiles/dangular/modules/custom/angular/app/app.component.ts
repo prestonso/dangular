@@ -1,5 +1,7 @@
 import {
-    Component
+    Component,
+    EventEmitter,
+    Output
 } from 'angular2/core';
 
 import {
@@ -37,4 +39,11 @@ import {
 })
 export class AppComponent
 {
+    isActivated: boolean = false;
+
+    openOffCanvas()
+    {
+        this.isActivated = true;
+        console.log('this.isActivated = true');
+    }
 }

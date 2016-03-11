@@ -45,6 +45,7 @@ System.register(['angular2/core', './views.service', './components/drupal-messag
                      * @type {RegExp}
                      */
                     this.columnClass = /-block-grid-([0-9]+)/;
+                    this.openOffCanvas = new core_1.EventEmitter();
                     // Angular will take care of dependency injection here.
                 }
                 DrupalView.prototype.ngOnInit = function () {
@@ -72,6 +73,15 @@ System.register(['angular2/core', './views.service', './components/drupal-messag
                     var _this = this;
                     this.views.save(this.entity).then(function () { return _this.submitted = false; });
                 };
+                DrupalView.prototype.onClickView = function (event) {
+                    this.openOffCanvas.emit(event);
+                    console.log('this.openOffCanvas.emit(event)');
+                    console.log(event);
+                };
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], DrupalView.prototype, "openOffCanvas", void 0);
                 DrupalView = __decorate([
                     core_1.Component({
                         selector: 'drupal-view',

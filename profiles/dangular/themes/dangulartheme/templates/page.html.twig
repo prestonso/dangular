@@ -69,8 +69,8 @@
       {{ page.left_off_canvas }}
     </aside>
 
-    <aside class="right-off-canvas-menu">
-      <drupal-view-config-form><p>How quickly deft jumping zebras vex<p></drupal-view-config-form>
+    <aside class="right-off-canvas-menu" [class.activated]="isActivated">
+      <drupal-view-config-form (openOffCanvas)="openOffCanvas()"><p>How quickly deft jumping zebras vex<p></drupal-view-config-form>
     </aside>
 
       {% if page.meta_header %}
@@ -230,4 +230,3 @@
 
   </div>
 </section>
-

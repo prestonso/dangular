@@ -49,33 +49,33 @@ dom_id ? 'js-view-dom-id-' ~ dom_id,
             <button type="submit" (click)="persist()" [disabled]="submitted">Save Changes</button>
         </div>
     </form>
-<div{{ attributes.addClass(classes) }}>
-    {{ title_prefix }}
-    {{ title }}
-    {{ title_suffix }}
+    <div{{ attributes.addClass(classes) }} (click)="onClickView($event)">
+        {{ title_prefix }}
+        {{ title }}
+        {{ title_suffix }}
 
-    {% if header %}
-        <header>
-            {{ header }}
-        </header>
-    {% endif %}
+        {% if header %}
+            <header>
+                {{ header }}
+            </header>
+        {% endif %}
 
-    {{ exposed }}
-    {{ attachment_before }}
+        {{ exposed }}
+        {{ attachment_before }}
 
-    {{ rows }}
-    {{ empty }}
-    {{ pager }}
+        {{ rows }}
+        {{ empty }}
+        {{ pager }}
 
-    {{ attachment_after }}
-    {{ more }}
+        {{ attachment_after }}
+        {{ more }}
 
-    {% if footer %}
-        <footer>
-            {{ footer }}
-        </footer>
-    {% endif %}
+        {% if footer %}
+            <footer>
+                {{ footer }}
+            </footer>
+        {% endif %}
 
-    {{ feed_icons }}
-</div>
+        {{ feed_icons }}
+    </div>
 </template>

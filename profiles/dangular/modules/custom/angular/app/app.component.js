@@ -35,7 +35,12 @@ System.register(['angular2/core', 'angular2/http', './views.service', './drupal-
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
+                    this.isActivated = false;
                 }
+                AppComponent.prototype.openOffCanvas = function () {
+                    this.isActivated = true;
+                    console.log('this.isActivated = true');
+                };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'body',

@@ -1,6 +1,8 @@
 import {
     Component,
-    OnInit
+    OnInit,
+    EventEmitter,
+    Output
 } from 'angular2/core';
 
 import {
@@ -100,5 +102,14 @@ export class DrupalView implements OnInit
     persist ()
     {
         this.views.save(this.entity).then(() => this.submitted = false);
+    }
+
+    @Output() openOffCanvas = new EventEmitter();
+
+    onClickView (event: any)
+    {
+        this.openOffCanvas.emit(event);
+        console.log('this.openOffCanvas.emit(event)');
+        console.log(event);
     }
 }
