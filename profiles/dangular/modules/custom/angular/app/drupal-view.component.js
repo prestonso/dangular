@@ -49,8 +49,8 @@ System.register(['angular2/core', './views.service', './components/drupal-messag
                 }
                 DrupalView.prototype.ngOnInit = function () {
                     var self = this;
-                    this.views.load('dangular_image_grid').then(function (response) {
-                        self.entity = response.json();
+                    this.views.load('dangular_image_grid').then(function (view) {
+                        self.entity = view;
                         self.classes = self.entity.display['default'].display_options.style.options['class'];
                     });
                 };

@@ -35,6 +35,7 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                      * @type {string}
                      */
                     this.baseUrl = Drupal.url('dangular-endpoint/view');
+                    this.views = {};
                     this.options = new http_1.RequestOptions({
                         headers: new http_1.Headers({
                             // We'll get internal server errors without the proper Accept
@@ -54,7 +55,14 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                  * @returns {Promise<Response>}
                  */
                 Views.prototype.load = function (id) {
-                    return this.http.get(this.baseUrl + '/' + id, this.options).toPromise();
+                    if (!(id in this.views)) {
+                        this.views[id] = this.http.get(this.baseUrl + '/' + id, this.options)
+                            .toPromise()
+                            .then(function (response) {
+                            return response.json();
+                        });
+                    }
+                    return this.views[id];
                 };
                 /**
                  * Saves an existing view entity.
@@ -70,6 +78,8 @@ System.register(['angular2/core', 'angular2/http', './services/message-queue', '
                         .toPromise()
                         .then(function () {
                         self.messageQueue.notify('The view has been saved!');
+                        // Destroy the cached promise; the next load will go to the server.
+                        delete self.views[view.id];
                     });
                 };
                 Views = __decorate([

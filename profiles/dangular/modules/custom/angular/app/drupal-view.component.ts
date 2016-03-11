@@ -66,9 +66,9 @@ export class DrupalView implements OnInit
         var self = this;
 
         this.views.load('dangular_image_grid').then(
-            function (response: Response)
+            function (view: any)
             {
-                self.entity = response.json();
+                self.entity = view;
                 self.classes = self.entity.display['default'].display_options.style.options['class'];
             }
         );

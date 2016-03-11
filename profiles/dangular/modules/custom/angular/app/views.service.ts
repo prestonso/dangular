@@ -37,6 +37,8 @@ export class Views
      */
     private options: RequestOptions;
 
+    private views: any = {};
+
     constructor (private http: Http, private messageQueue: MessageQueue)
     {
         this.options = new RequestOptions({
@@ -60,7 +62,19 @@ export class Views
      */
     load (id)
     {
-        return this.http.get(this.baseUrl + '/' + id, this.options).toPromise();
+        if (! (id in this.views))
+        {
+            this.views[id] = this.http.get(this.baseUrl + '/' + id, this.options)
+                .toPromise()
+                .then(
+                    function (response: Response)
+                    {
+                        return response.json();
+                    }
+                );
+        }
+
+        return this.views[id];
     }
 
     /**
@@ -81,6 +95,9 @@ export class Views
                 function ()
                 {
                     self.messageQueue.notify('The view has been saved!');
+
+                    // Destroy the cached promise; the next load will go to the server.
+                    delete self.views[view.id];
                 }
             );
     }
