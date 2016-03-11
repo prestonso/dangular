@@ -68,10 +68,33 @@ body {
 }
 
 .off-canvas-wrap form label,
-.off-canvas-wrap form p {
+.off-canvas-wrap form p,
+.off-canvas-wrap h3  {
   color: #ddd;
+}
+
+.off-canvas-wrap h3  {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #ddd;
+  padding-top: 1em;
+  padding-left: 1em;
+}
+
+.off-canvas-wrap a {
+  color: #61B6D9;
+  padding-left: 1em;
 }
 
 .off-canvas-wrap .button {
   width: 100%;
+}
+
+/* Editable affordance */
+
+#views-view:hover,
+#views-view:focus {
+  box-shadow: 0 0 0 2px #74b7ff;
+  -webkit-transition: all .5s;
+  transition: all .5s;
 }
